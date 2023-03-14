@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
 import axios from 'axios';
 import { ref } from 'vue';
+import { Country } from './interfaces/Country';
+import CountryVue from './components/Country.vue';
 
-interface Country {
-  ID: string;
-  Country: string;
-  CountryCode: string;
-  Slug: string;
-  TotalConfirmed: number;
-  TotalDeaths: number;
-  FatalitiesRate: number;
-}
+
 
 const Countries = ref([] as Country[])
+
+let searchInput = ref('')
 
 axios.get('https://api.covid19api.com/summary')
   .then((response) => {
@@ -33,15 +28,19 @@ axios.get('https://api.covid19api.com/summary')
   .catch((error) => {
     console.log(error);
   })
+
+function filteredCountries(): Country[] {
+  return Countries.value.filter((country) => {
+    return country.Country.toLowerCase().includes(searchInput.value.toLowerCase())
+  })
+}
 </script>
 
 <template>
   <div>
-    <div class="country" v-for="(country, index) in Countries" :key="index">
-      <h1>{{ country.Country }}</h1>
-      <p>Total Confirmed: {{ country.TotalConfirmed.toLocaleString() }}</p>
-      <p>Total Deaths: {{ country.TotalDeaths.toLocaleString() }}</p>
-      <p>Fatalities Rate: {{ country.FatalitiesRate.toFixed(2) }}%</p>
+    <input type="text" v-model="searchInput">
+    <div class="country" v-for="(country, index) in filteredCountries()" :key="index">
+      <CountryVue :country="country" />
     </div>
   </div>
 </template>
