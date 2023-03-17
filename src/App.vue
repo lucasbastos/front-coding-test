@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { ref } from 'vue';
-import { Country } from './interfaces/Country';
+// import { Country } from './interfaces/country.interface';
 import CountryVue from './components/Country.vue';
+import SearchInput from './components/SearchInput.vue';
+import TopBar from './components/TopBar.vue';
 
-
+interface Country {
+    ID: string;
+    Country: string;
+    CountryCode: string;
+    Slug: string;
+    TotalConfirmed: number;
+    TotalDeaths: number;
+    FatalitiesRate: number;
+  }
 
 const Countries = ref([] as Country[])
 
@@ -37,25 +47,63 @@ function filteredCountries(): Country[] {
 </script>
 
 <template>
-  <div>
-    <input type="text" v-model="searchInput">
+  <div class="main">
+    <TopBar />
+    <SearchInput v-model="searchInput" />
+    <div class="main__top-content">
+      <div class="content-text">
+        <h1>Conheça o Covidômetro</h1>
+        <p>Fique atualizado com velocidade e transparência. O covidômetro é uma
+        ferramenta que mostra para você em tempo real o nome de casos e óbitos
+        relacionados a pandemia da COVID-19 ao redor do mundo.</p>
+      </div>
+      <img src="./assets/doctors.svg" alt="">
+    </div>
     <div class="country" v-for="(country, index) in filteredCountries()" :key="index">
       <CountryVue :country="country" />
     </div>
   </div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<style scoped lang="scss">
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &__top-content {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 109px;
+    z-index: -1
+  }
+  .country {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-right: 2rem;
+    width: 745px;
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.5rem;
+      font-weight: 300;
+      text-align: center;
+    }
+  }
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
+
 </style>
