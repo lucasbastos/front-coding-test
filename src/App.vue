@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { ref } from 'vue';
-// import { Country } from './interfaces/country.interface';
+import { computed, ref } from 'vue';
 import CountryVue from './components/Country.vue';
 import SearchInput from './components/SearchInput.vue';
 import TopBar from './components/TopBar.vue';
+
+// this is must have
+import { library } from '@fortawesome/fontawesome-svg-core';
+// import { name of your icon in camelCase } from "@fortawesome/free-solid-svg-icons";
+// For example, I want to use fa-enveloper-open-text, then it's faEnvelopeOpenText
+import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
+// Then add it to library
+library.add(faEnvelopeOpenText)
 
 interface Country {
     ID: string;
@@ -20,10 +27,11 @@ const Countries = ref([] as Country[])
 
 let searchInput = ref('')
 
-axios.get('https://api.covid19api.com/summary')
-  .then((response) => {
-    response.data.Countries.map((country: Country) => {
-      let countryData = {
+async function getCountriesData() {
+  try {
+    const response = await axios.get('https://api.covid19api.com/summary');
+    const countriesData = response.data.Countries.map((country: Country) => {
+      return {
         ID: country.ID,
         Country: country.Country,
         CountryCode: country.CountryCode,
@@ -32,18 +40,20 @@ axios.get('https://api.covid19api.com/summary')
         TotalDeaths: country.TotalDeaths,
         FatalitiesRate: (country.TotalDeaths / country.TotalConfirmed * 100)
       }
-      Countries.value.push(countryData)
-    })
-  })
-  .catch((error) => {
+    });
+    Countries.value = countriesData;
+  } catch (error) {
     console.log(error);
-  })
+  }
+}
 
-function filteredCountries(): Country[] {
+getCountriesData();
+
+const filteredCountries = computed(() => {
   return Countries.value.filter((country) => {
     return country.Country.toLowerCase().includes(searchInput.value.toLowerCase())
   })
-}
+});
 </script>
 
 <template>
@@ -51,15 +61,21 @@ function filteredCountries(): Country[] {
     <TopBar />
     <SearchInput v-model="searchInput" />
     <div class="main__top-content">
+        <h1>{{ $t('hello') }}</h1>
+
       <div class="content-text">
-        <h1>Conheça o Covidômetro</h1>
-        <p>Fique atualizado com velocidade e transparência. O covidômetro é uma
+        <p class="text-title">Conheça o Covidômetro</p>
+        <p class="text-subtitle">Fique atualizado com velocidade e transparência. O covidômetro é uma
         ferramenta que mostra para você em tempo real o nome de casos e óbitos
         relacionados a pandemia da COVID-19 ao redor do mundo.</p>
       </div>
       <img src="./assets/doctors.svg" alt="">
     </div>
-    <div class="country" v-for="(country, index) in filteredCountries()" :key="index">
+    <select v-model="$i18n.locale">
+      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
+    </select>
+
+    <div class="country" v-for="(country, index) in filteredCountries" :key="index">
       <CountryVue :country="country" />
     </div>
   </div>
@@ -92,18 +108,21 @@ function filteredCountries(): Country[] {
     align-items: flex-start;
     margin-right: 2rem;
     width: 745px;
-    h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
+    .text-title {
+      font-size: 3.2rem;
+      font-weight: 700;
       margin-bottom: 1rem;
+      position: relative;
+      bottom: 49px;
+      left: 13px;
     }
-    p {
-      font-size: 1.5rem;
-      font-weight: 300;
-      text-align: center;
+    .text-subtitle {
+      position: relative;
+      bottom: 79px;
+      font-size: 1.1rem;
+      width: 563px;
     }
   }
 }
-
 
 </style>

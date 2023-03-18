@@ -13,6 +13,8 @@
   height: 4rem;
   display: flex;
   flex-direction: column;
+  position: absolute;
+    top: 0px;
   img {
     display: flex; 
     width: fit-content; 
