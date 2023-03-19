@@ -1,21 +1,12 @@
 <script setup lang="ts">
-
-interface Country {
-    ID: string;
-    Country: string;
-    CountryCode: string;
-    Slug: string;
-    TotalConfirmed: number;
-    TotalDeaths: number;
-    FatalitiesRate: number;
-  }
+import type { Country } from '../interfaces/country';
 
 defineProps<{ country: Country }>()
 
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @click="$router.push(`/country/${country.Slug}`)">
     <div class="card__title">
       <h2>{{ country.Country }}</h2>
     </div>
@@ -31,8 +22,7 @@ defineProps<{ country: Country }>()
       <div class="card__content-item">
         <p class="item__title">Fatalidades</p> 
         <p class="item__number">{{ country.FatalitiesRate.toFixed(2) }}%</p>
-      </div>
-      
+      </div>   
     </div>
   </div>
 </template>
@@ -43,19 +33,26 @@ defineProps<{ country: Country }>()
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.7rem;
   padding: 0.5rem;
-  width: 47rem;
-  height: 9rem;
+  width: 48rem;
+  height: 10.1rem;
   display: flex;
   flex-direction: column;
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    transform: translateY(-5px);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
   &__title{
     font-weight: bold;
+    margin-top: -10px;
   }
   &__content {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     height: 100%;
   }
 }
@@ -73,6 +70,16 @@ defineProps<{ country: Country }>()
     color: #EF6160;
     margin: 0;
 
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    height: auto;
+  }
+
+  .card__content {
+    flex-direction: column;
   }
 }
 

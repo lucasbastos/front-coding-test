@@ -1,4 +1,18 @@
 <script setup lang="ts">
+import { defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  value: {
+    type: String,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['input']);
+
+const updateValue = (event: Event) => {
+  emit('input', (event.target as HTMLInputElement).value);
+};
 </script>
 
 <template>
@@ -6,7 +20,7 @@
   <h2 class="input-container__title">Filtrar dados sobre um país</h2>
   <div style="border-bottom: 1px solid #EF6160;">
     <font-awesome-icon icon="search" class="search-icon" />
-    <input class="input-container__input" type="text" placeholder="Digite o nome do país">
+    <input class="input-container__input" type="text" placeholder="Digite o nome do país" :value="value" @input="updateValue">
   </div>
 </div>
 </template>
