@@ -2,28 +2,25 @@
 <template>
     <div class="topbar">
         <img src="../assets/logo.png" alt="" >
-        <!-- <select v-model="$i18n.locale">
-      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
-    </select> -->
     </div>
 </template>
 <style scoped lang="scss">
 .topbar {
-    background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  width: 100%;
-  height: 4rem;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-    top: 0px;
-  img {
-    display: flex; 
-    width: fit-content; 
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
-    margin-left: 127px;
-    margin-top: 11px;
-  }
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    height: 4rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    img {
+    display: flex; 
+    align-items: center;
+    margin-left: 11px;
+    }
 }
 </style>

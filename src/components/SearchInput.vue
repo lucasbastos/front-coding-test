@@ -26,7 +26,7 @@ const updateValue = (event: Event) => {
 
 <style scoped lang="scss">
 .input-container {
-    background-color: #fff;
+  background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   margin-top: 26rem;
@@ -51,7 +51,16 @@ const updateValue = (event: Event) => {
   font-size: 16px;
   
   width: 36rem;
+}
 
+@media screen and (max-width: 768px) {
+  .input-container {
+    width: 90vw;
+    margin-top: 5rem;
 
+  }
+  .input-container input[type="text"] {
+      width: 80vw;
+}
 }
 </style>

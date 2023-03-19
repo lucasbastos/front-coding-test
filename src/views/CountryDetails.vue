@@ -89,4 +89,10 @@ getCountryData();
     font-weight: 600;
     color: #EF6160;
 }
+
+@media screen and (max-width: 768px) {
+    .country-details__body__item {
+        width: 90vw;
+    }
+}
 </style>

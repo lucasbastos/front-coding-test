@@ -15,7 +15,7 @@ defineProps<{ country: Country }>()
         <p class="item__title">Total de casos</p>
         <p class="item__number">{{ country.TotalConfirmed.toLocaleString() }}</p>
       </div>
-      <div class="card__content-item">
+      <div class="card__content-item middle-border">
         <p class="item__title">Mortes</p>
         <p class="item__number">{{ country.TotalDeaths.toLocaleString() }}</p>
       </div>
@@ -73,9 +73,16 @@ defineProps<{ country: Country }>()
   }
 }
 
+.middle-border {
+  padding: 0 6rem 0 6rem;
+  border-left: 1px solid #0e1b3312;
+  border-right: 1px solid #0e1b3312;
+}
+
 @media (max-width: 768px) {
   .card {
     height: auto;
+    width: 90vw;
   }
 
   .card__content {
